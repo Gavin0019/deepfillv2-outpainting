@@ -4,15 +4,15 @@
 
 # Resume from pretrained model (recommended for faster convergence)
 # Download pretrained weights first - see pretrained/README.md
-model_restore: 'weights/states_pt_places2.pth'  # Fine-tune from Places2 pretrained
+model_restore: '/content/states_pt_places2.pth'  # Fine-tune from Places2 pretrained
 
 # Dataloading
-dataset_path: '/path/to/places365'  # Update this to your dataset path
+dataset_path: '/content/subset_50000'  # Update this to your dataset path
 scan_subdirs: True
 random_crop: True  # Important for Places365 (images vary in size)
 random_horizontal_flip: True
-batch_size: 16
-num_workers: 4
+batch_size: 64
+num_workers: 2
 
 # Outpainting specific settings
 use_outpaint_dataset: False  # If True, use OutpaintingDataset; if False, generate masks in training loop
@@ -47,7 +47,7 @@ d_lr: 0.00005   # Half of original 0.0001 for fine-tuning
 d_beta1: 0.5
 d_beta2: 0.999
 
-max_iters: 500000  # Fewer iterations needed when fine-tuning
+max_iters: 50000  # Fewer iterations needed when fine-tuning
 
 # Logging
 viz_max_out: 10
