@@ -2,6 +2,10 @@
 Validation script for outpainting model.
 
 Usage:
+    # Install dependencies first
+    pip install lpips torchmetrics
+
+    # Run validation
     python validate.py --checkpoint checkpoints/outpaint/exp0/states.pth --val_dir data/places365/val_256
 """
 
@@ -13,6 +17,7 @@ from PIL import Image
 import glob
 from pathlib import Path
 from tqdm import tqdm
+import lpips
 
 
 def main():
@@ -37,6 +42,7 @@ def main():
     # Initialize metrics (data_range=1.0 for normalized [0,1] images)
     psnr = PeakSignalNoiseRatio(data_range=1.0).to(device)
     ssim = StructuralSimilarityIndexMeasure(data_range=1.0).to(device)
+    lpips_fn = lpips.LPIPS(net='alex').to(device)  # AlexNet-based LPIPS
 
     # Determine model type from checkpoint
     checkpoint_data = torch.load(args.checkpoint, map_location=device)
@@ -67,6 +73,7 @@ def main():
 
     psnr_scores = []
     ssim_scores = []
+    lpips_scores = []
 
     for img_path in tqdm(val_images, desc="Validating"):
         try:
@@ -110,8 +117,15 @@ def main():
             psnr_score = psnr(output_norm * mask, gt_norm * mask)
             ssim_score = ssim(output_norm * mask, gt_norm * mask)
 
+            # LPIPS expects [-1, 1] range, apply mask to both
+            lpips_score = lpips_fn(
+                (output_norm * 2 - 1) * mask,
+                (gt_norm * 2 - 1) * mask
+            )
+
             psnr_scores.append(psnr_score.item())
             ssim_scores.append(ssim_score.item())
+            lpips_scores.append(lpips_score.item())
 
         except Exception as e:
             print(f"Error processing {img_path}: {e}")
@@ -124,8 +138,10 @@ def main():
     print(f"Number of images: {len(psnr_scores)}")
     print(f"Average PSNR: {sum(psnr_scores)/len(psnr_scores):.2f} dB")
     print(f"Average SSIM: {sum(ssim_scores)/len(ssim_scores):.4f}")
+    print(f"Average LPIPS: {sum(lpips_scores)/len(lpips_scores):.4f}")
     print(f"PSNR std: {torch.tensor(psnr_scores).std().item():.2f}")
     print(f"SSIM std: {torch.tensor(ssim_scores).std().item():.4f}")
+    print(f"LPIPS std: {torch.tensor(lpips_scores).std().item():.4f}")
     print("="*60)
 
 
