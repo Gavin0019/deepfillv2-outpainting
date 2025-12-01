@@ -129,25 +129,6 @@ python test_outpaint.py --image input.jpg \
     --save_stages
 ```
 
-### Validation
-
-Evaluate model performance on a validation dataset:
-
-```bash
-pip install lpips torchmetrics
-
-python validate.py \
-    --checkpoint pretrained/states_pt_places2.pth \
-    --val_dir data/places365/val_256 \
-    --num_samples 100 \
-    --crop_ratio 0.6
-```
-
-Metrics computed:
-- **PSNR** (Peak Signal-to-Noise Ratio)
-- **SSIM** (Structural Similarity Index)
-- **LPIPS** (Learned Perceptual Image Patch Similarity)
-
 ## Training
 
 ### Train Inpainting Model
