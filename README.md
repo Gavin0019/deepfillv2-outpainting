@@ -101,6 +101,10 @@ python test_outpaint.py --image input.jpg \
 Automatically detect edges and generate masks using Canny edge detection:
 
 ```bash
+# Basic automatic mask generation
+python test_inpaint_auto.py --image input.jpg \
+    --checkpoint pretrained/states_pt_places2.pth
+
 # Custom Canny parameters
 python test_inpaint_auto.py --image input.jpg \
     --checkpoint pretrained/states_pt_places2.pth \
