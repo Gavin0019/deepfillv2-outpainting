@@ -14,6 +14,10 @@ Usage:
     # Canny with flood fill (creates connected regions)
     python test_inpaint_auto.py --image input.jpg --checkpoint states.pth \
         --flood_fill --seed_x 256 --seed_y 256
+
+    # Flood fill with tolerance (fills through color variations)
+    python test_inpaint_auto.py --image input.jpg --checkpoint states.pth \
+        --flood_fill --fill_tolerance 10
 """
 
 import argparse
@@ -63,8 +67,14 @@ def generate_auto_mask(image, **kwargs):
         h_ff, w_ff = mask_inv.shape
         mask_floodfill = np.zeros((h_ff + 2, w_ff + 2), np.uint8)
 
-        # Flood fill from seed point
-        cv2.floodFill(mask_inv, mask_floodfill, seed_point, 255)
+        # Flood fill tolerance - allows filling through slight variations
+        fill_tolerance = kwargs.get('fill_tolerance', 0)
+        lo_diff = (fill_tolerance,)
+        hi_diff = (fill_tolerance,)
+
+        # Flood fill from seed point with tolerance
+        cv2.floodFill(mask_inv, mask_floodfill, seed_point, 255,
+                     loDiff=lo_diff, upDiff=hi_diff)
 
         # Invert to get the filled region as the mask
         mask = cv2.bitwise_not(mask_inv)
@@ -101,6 +111,8 @@ def main():
                         help="Flood fill seed point x-coordinate (default: center)")
     parser.add_argument("--seed_y", type=int, default=None,
                         help="Flood fill seed point y-coordinate (default: center)")
+    parser.add_argument("--fill_tolerance", type=int, default=0,
+                        help="Flood fill tolerance for color variations (default: 0)")
 
     # Visualization options
     parser.add_argument("--save_mask", action="store_true",
@@ -165,7 +177,8 @@ def main():
         kernel_size=args.dilate_kernel,
         iterations=args.dilate_iter,
         flood_fill=args.flood_fill,
-        seed_point=seed_point
+        seed_point=seed_point,
+        fill_tolerance=args.fill_tolerance
     ).to(device)
 
     # Count masked pixels
