@@ -70,6 +70,14 @@ python test.py --image input.jpg --mask mask.png --out output.png \
     --checkpoint pretrained/states_pt_places2.pth
 ```
 
+### Soft-Mask Inpainting
+
+```bash
+# Standard inpainting with a mask
+python test.py --image input.jpg --mask mask.png --out output.png \
+    --checkpoint pretrained/states_softmask_inpaint.pth
+```
+
 ### Outpainting
 
 Extend images beyond their original boundaries:
