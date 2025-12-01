@@ -20,29 +20,45 @@ A PyTorch implementation of **Free-Form Image Inpainting with Gated Convolution*
 git clone https://github.com/Gavin0019/csc2503-deepfillv2-expansion.git
 cd deepfillv2-pytorch
 
+# (Recommended) Create and activate a virtual environment / conda env
+# python -m venv .venv
+# source .venv/bin/activate   # or .venv\Scripts\activate on Windows
+
 # Install dependencies
-pip install torch torchvision numpy pillow pyyaml tensorboard
-pip install opencv-python  # For automatic mask generation
+pip install -r requirements.txt
 
-# Optional: For validation metrics
-pip install lpips torchmetrics
-
-# Optional: For web interface
-pip install fastapi python-multipart "uvicorn[standard]"
 ```
 
 ### Download Pretrained Models
 
 Download the pretrained weights and place them in the `pretrained/` directory:
 
-- **Places2** (TF-compatible): [Download](https://drive.google.com/u/0/uc?id=1tvdQRmkphJK7FYveNAKSMWC6K09hJoyt&export=download)
-- **CelebA-HQ** (TF-compatible): [Download](https://drive.google.com/u/0/uc?id=1fTQVSKWwWcKYnmeemxKWImhVtFQpESmm&export=download)
-- **Places2** (PyTorch-native): [Download](https://drive.google.com/u/0/uc?id=1L63oBNVgz7xSb_3hGbUdkYW1IuRgMkCa&export=download)
-- **CelebA-HQ** (PyTorch-native): [Download](https://drive.google.com/u/0/uc?id=17oJ1dJ9O3hkl2pnl8l2PtNVf2WhSDtB7&export=download)
+- **Places2** (TF-compatible): [Download](...)
+- **CelebA-HQ** (TF-compatible): [Download](...)
+- **Places2** (PyTorch-native): [Download](...)
+- **CelebA-HQ** (PyTorch-native): [Download](...)
 
 Save as:
 - `pretrained/states_tf_places2.pth` (TF-compatible)
 - `pretrained/states_pt_places2.pth` (PyTorch-native)
+
+Optionally, you can also use our fine-tuned outpainting checkpoint:
+
+We provide our fine-tuned outpainting checkpoint (trained for 20–50k iterations on a 50k-image Places365 subset):
+
+#### 1. Outpainting Model (ours)
+Fine-tuned for 20–50k steps on a 50k-image Places365 subset using border expansion masks.
+
+- **Download (Google Drive):** <https://drive.google.com/file/d/1sk4nfm2WC0JUzJA4kMk1q-a6RiMclQDn/view?usp=sharing>
+Save as: pretrained/states_outpaint_places365_50k.pth
+
+#### 2. Soft-mask Inpainting Model (ours)
+Trained using blurred α-masks and soft compositing to produce smoother interior inpainting boundaries.
+
+- **Download (Google Drive):** <https://drive.google.com/file/d/1iB0oZvlGhRIDv-_RGlWt0idABAHw0fQB/view?usp=sharing>
+
+Save as: pretrained/states_softmask_inpaint.pth
+
 
 ## Usage
 
