@@ -8,3 +8,7 @@ pyyaml
 tensorboard
 tqdm
 lpips
+torchmetrics
+fastapi
+uvicorn[standard]
+python-multipart

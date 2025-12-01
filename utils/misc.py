@@ -2,6 +2,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 import torch
 import torchvision.transforms as T
+from utils.softmask import binary_to_soft_alpha_gaussian
 
 import yaml
 try:
