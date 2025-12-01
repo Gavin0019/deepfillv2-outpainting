@@ -187,6 +187,15 @@ python train_softmask.py --config configs/train_soft_alpha.yaml
 
 ## Web Interface
 
+We provide an interactive web interface for manual inpainting and outpainting, built with **FastAPI** (backend) and **React** (frontend). The interface allows you to upload an image, draw masks, adjust outpainting parameters, and run inference using any of the pretrained models.
+
+### Screenshot
+
+<p align="center">
+  <img src="images/ui.png" width="700"/>
+</p>
+
+---
 Launch the interactive web application with inpainting and outpainting capabilities:
 
 ```bash
