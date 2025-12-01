@@ -129,6 +129,32 @@ python test_outpaint.py --image input.jpg \
     --save_stages
 ```
 
+## Dataset Setup
+
+This project uses subsets of the **Places365-Standard** dataset for both outpainting and soft-mask inpainting.  
+To simplify setup, we provide automated download scripts that download the required images and arrange them into the correct directory structure.
+
+All dataset preparation scripts are located in the `scripts/` directory.
+
+---
+
+### 📥 Downloading Data for Outpainting
+
+Use the following script to download and prepare the Places365 subset for **outpainting**:
+
+```bash
+python scripts/download_places365_outpaint.py
+```
+
+### 📥 Downloading Data for Soft-mask Inpainting
+
+For the soft-mask inpainting experiments, run:
+
+```bash
+python scripts/download_places365_softmask.py
+```
+This script sets up the data in a separate folder with the structure expected by the soft-mask training code.
+
 ## Training
 
 ### Train Inpainting Model
@@ -150,6 +176,13 @@ python train_outpaint.py --config configs/train_outpaint.yaml
 # Custom settings
 python train_outpaint.py --config configs/train_outpaint.yaml \
     --crop_ratio 0.6 --batch_size 8
+```
+
+### Training the Soft-mask Inpainting Model
+
+To train the soft-mask model, simply run:
+```bash
+python train_softmask.py --config configs/train_soft_alpha.yaml
 ```
 
 ## Web Interface
