@@ -262,7 +262,11 @@ Input → Masked → Inpainted:
 
 ### Outpainting Results
 
-Original → Outpainted (25% expansion):
+Input → Masked → Outpainted:
+
+| Input | Masked | Outpainted |
+|-------|--------|-----------|
+| <img src="images/input.jpg" width="250"/> | <img src="images/masked.jpg" width="250"/> | <img src="images/outpainted.jpg" width="250"/> |
 
 *Add your outpainting examples here*
 
